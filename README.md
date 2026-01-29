@@ -1,4 +1,3 @@
-✅ README.md (Phase 4) — Full Replace
 # Hackathon II – Phase 4 (Kubernetes + Helm)
 
 AI-Powered Todo App + Chatbot (Agent + MCP Tools) deployed on **Kubernetes (Minikube)** using **Docker images + Helm charts**.
