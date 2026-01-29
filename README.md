@@ -1,177 +1,171 @@
-# Hackathon II – Phase 3  
-## AI-Powered Todo Chatbot (Agent + MCP Tools)
+✅ README.md (Phase 4) — Full Replace
+# Hackathon II – Phase 4 (Kubernetes + Helm)
 
-This project is a **Phase-3 compliant, agent-based Todo chatbot** built for **Hackathon II**.  
-It uses **FastAPI**, **OpenAI Agents SDK**, and **official MCP tools** to manage tasks via **natural language**, with **persistent conversation memory** backed by **Neon PostgreSQL**.
+AI-Powered Todo App + Chatbot (Agent + MCP Tools) deployed on **Kubernetes (Minikube)** using **Docker images + Helm charts**.
 
-The backend is **Dockerized** and deployed on **Hugging Face Spaces**, while the frontend is built with **Next.js (App Router)** and deployed on **Vercel**.
-
----
-
-## 🚀 Features (Phase-3 Scope)
-
-- 🤖 **Agent-based chatbot** (NO regex / rule-based logic)
-- 🧠 **OpenAI Agents SDK** for reasoning + tool orchestration
-- 🧰 **Official MCP tools only** for all task operations  
-  (no direct DB access from agent)
-- 💬 **Natural language commands**:
-  - `add <task>`
-  - `list`
-  - `complete <task_id>`
-  - `delete <task_id>`
-  - `stats`
-- 🗂️ **Persistent conversation memory**
-- 🔁 **conversation_id preserved** across messages
-- 🗄️ **Neon PostgreSQL** for:
-  - Tasks
-  - Conversations
-  - Messages
-- 🔐 **Secure environment variables**
-- 🐳 **Dockerized backend** for production
-- 🎨 **Premium UI dashboard + floating AI chatbot**
-- 🧩 **Custom ChatKit-style UI** (App Router compatible)
+This phase focuses on containerization + Kubernetes deployment (backend + frontend), and making the app runnable for judges locally via Minikube.
 
 ---
 
-## 🧱 Architecture Overview
+## ✅ What’s Included (Phase 4)
 
-Frontend (Next.js App Router)
-│
-│ Floating AI Chatbot Widget
-│ └── Calls /api/{user_id}/chat
-│
-Backend (FastAPI on Hugging Face)
-│
-├── OpenAI Agent (Agents SDK)
-│ ├── MCP Tool: add_task
-│ ├── MCP Tool: list_tasks
-│ ├── MCP Tool: complete_task
-│ ├── MCP Tool: delete_task
-│ └── MCP Tool: stats
-│
-└── Neon PostgreSQL
-├── tasks
-├── conversations
-└── messages
+### Backend
+- FastAPI backend
+- OpenAI Agents SDK + MCP tools integration
+- Database support (Neon Postgres via `DATABASE_URL`)
+- Dockerized backend image
+- Helm chart to deploy on Kubernetes
 
+### Frontend
+- Next.js App Router frontend (Todo dashboard + floating chatbot)
+- Uses Next.js API routes as **proxy** to avoid CORS (frontend calls `/api/...`)
+- Dockerized frontend image
+- Helm chart to deploy on Kubernetes
+
+### Kubernetes / Helm
+- Helm chart for backend: `helm/todo-backend`
+- Helm chart for frontend: `helm/todo-frontend`
+- Services deployed inside cluster
+- Frontend connects to backend via cluster DNS: `http://todo-backend:8000`
 
 ---
 
-## 🖥️ Frontend
+## 🧱 Architecture (Phase 4)
 
-- **Framework**: Next.js (App Router)
-- **UI**:
-  - Sign-in welcome screen
-  - Premium Todo dashboard
-  - Floating **AI button** → opens chatbot
-- **Auth**:
-  - Demo auth via `localStorage` (`todo_user_id`)
-- **Deployment**: Vercel
+Browser → Frontend (Next.js on K8s)  
+Frontend → (Proxy Routes) → Backend (FastAPI on K8s)  
+Backend → Neon Postgres (optional)  
+Backend → OpenAI API (requires key)
 
-### Frontend Environment Variable
+---
 
-```env
-NEXT_PUBLIC_API_BASE=https://<your-huggingface-space>.hf.space
+## 📦 Repo Structure
 
-⚙️ Backend
 
-    Framework: FastAPI
 
-    Agent: OpenAI Agents SDK
-
-    Tools: MCP (Model Context Protocol)
-
-    Database: Neon PostgreSQL
-
-    Deployment: Hugging Face Spaces
-
-    Container: Docker
-
-Backend Environment Variables
-
-OPENAI_API_KEY=sk-****
-DATABASE_URL=postgresql+asyncpg://...
-
-🧪 Example Chat Commands
-
-add buy milk
-list
-complete 1
-delete 2
-stats
-
-🧠 Conversation Memory (Phase-3 Requirement)
-
-    Each chat creates or reuses a conversation_id
-
-    The same conversation continues across messages
-
-    Stored in Neon PostgreSQL
-
-    Enables context-aware responses
-
-🧑‍⚖️ For Judges (Phase-3 Checklist)
-
-This project fully satisfies Hackathon II – Phase 3 requirements:
-
-✅ Agent-based system (no regex, no hardcoded rules)
-✅ OpenAI Agents SDK used
-✅ All task actions via MCP tools only
-✅ Persistent conversation memory implemented
-✅ conversation_id maintained across turns
-✅ Database-backed (Neon PostgreSQL)
-✅ Deployed backend (Hugging Face)
-✅ Deployed frontend (Vercel)
-✅ Clean UI + integrated chatbot
-✅ Dockerized backend for production
-
-    ⚠️ Note on ChatKit
-    Official ChatKit UI could not be used due to Next.js App Router incompatibility.
-    A custom ChatKit-style UI was implemented instead, while keeping agent + MCP logic fully compliant.
-
-📦 Repository Structure
-
-hackathon-ii-phase3-chatbot/
-│
+.
 ├── backend/
-│   ├── app/
-│   │   ├── agents/
-│   │   ├── mcp_tools/
-│   │   ├── models/
-│   │   ├── routers/
-│   │   └── main.py
-│   ├── Dockerfile
-│   └── requirements.txt
-│
+│ ├── app/
+│ ├── Dockerfile
+│ └── requirements.txt
 ├── frontend/
-│   ├── app/
-│   │   ├── page.tsx
-│   │   ├── signin/
-│   │   └── dashboard/
-│   ├── components/
-│   │   └── ChatbotWidget.tsx
-│   └── lib/
-│
+│ ├── app/
+│ ├── components/
+│ ├── lib/
+│ └── Dockerfile
+├── helm/
+│ ├── todo-backend/
+│ └── todo-frontend/
 └── README.md
 
-🚀 Live Deployments
 
-    Frontend (Vercel)
-    👉 https://phase3-ismatfatima-ai-todo.vercel.app
+---
 
-    Backend (Hugging Face Spaces)
-    👉 https://ismat110-hackathon-ii-phase3-chatbot.hf.space
+## 🔐 Environment Variables (NO secrets in repo)
 
-🏁 Final Notes
+### Backend Helm Values
+Set these during install/upgrade (recommended via `--set`):
 
-This project demonstrates a production-ready, agent-driven AI system with:
+- `env.OPENAI_API_KEY`
+- `env.DATABASE_URL`
 
-    Clear separation of concerns
+Example (PowerShell):
 
-    Tool-only task execution
+```powershell
+helm upgrade --install todo-backend .\helm\todo-backend `
+  --set env.OPENAI_API_KEY="YOUR_KEY_HERE" `
+  --set env.DATABASE_URL="YOUR_DATABASE_URL_HERE"
 
-    Persistent memory
 
-    Real deployment
+Frontend does NOT need OpenAI key.
 
-It is fully aligned with Hackathon II – Phase 3 objectives.
+🚀 Run Locally for Judges (Minikube + Helm)
+1) Start Minikube
+minikube start
+
+2) Build + Load Backend Image
+docker build -t todo-backend:local .\backend
+minikube image load todo-backend:local
+
+3) Deploy Backend via Helm
+helm upgrade --install todo-backend .\helm\todo-backend `
+  --set image.repository="todo-backend" `
+  --set image.tag="local" `
+  --set env.OPENAI_API_KEY="YOUR_KEY_HERE" `
+  --set env.DATABASE_URL="YOUR_DATABASE_URL_HERE"
+
+4) Build + Load Frontend Image
+docker build -t todo-frontend:local .\frontend
+minikube image load todo-frontend:local
+
+5) Deploy Frontend via Helm
+helm upgrade --install todo-frontend .\helm\todo-frontend `
+  --set image.repository="todo-frontend" `
+  --set image.tag="local"
+
+6) Open the App
+minikube service todo-frontend
+
+✅ Quick Verification Commands
+Check pods
+kubectl get pods
+
+Check services
+kubectl get svc
+
+Backend health (from inside cluster)
+kubectl run curlpod --rm -it --image=curlimages/curl --restart=Never -- `
+  curl -s http://todo-backend:8000/health
+
+🧑‍⚖️ Judges Demo (What to show)
+
+kubectl get pods → backend + frontend running
+
+kubectl get svc → services exist
+
+Open app via minikube service todo-frontend
+
+Sign in (demo auth via localStorage userId)
+
+Create todo tasks
+
+Open chatbot widget → try:
+
+list
+
+add buy milk
+
+complete 1
+
+delete 1
+
+stats
+
+Show backend logs if needed:
+
+kubectl logs deploy/todo-backend --tail=100
+
+📝 Notes
+
+This Phase-4 repo is intended for Kubernetes deployment (Minikube).
+
+No secrets are committed to GitHub (push protection safe).
+
+If CORS errors appear, frontend proxy routes handle it via /api/....
+
+✅ Phase 4 Complete
+
+Kubernetes + Helm deployment setup is implemented for both backend and frontend.
+
+
+---
+
+## ✅ Judges Demo Steps (Short Script)
+
+1) `minikube start`  
+2) Build/load backend image → deploy backend helm (with OPENAI key + DB URL)  
+3) Build/load frontend image → deploy frontend helm  
+4) `minikube service todo-frontend` open in browser  
+5) Show todo add/list/complete/delete  
+6) Show chatbot commands: `list / add milk / complete 1 / delete 1 / stats`  
+7) Show `kubectl get pods` and `kubectl get svc`
